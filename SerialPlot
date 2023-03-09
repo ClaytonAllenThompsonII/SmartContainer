@@ -1,5 +1,6 @@
-# Real Time plot using a Serial Connection. 
-
+#Code foundation as of 03.09.23 is attributed to WaveShapePlay and their Arduino_RealTimePlot public repository. 
+#Real Time plot using a Serial Connection.
+#Serial Connection reads Load Cell Sensors. 
 
 import time
 import serial
@@ -30,8 +31,8 @@ class AnimationPlot:
 
     def getPlotFormat(self):
         ax.set_ylim([0, 1200])                              # Set Y axis limit of plot
-        ax.set_title("Arduino Data")                        # Set title of figure
-        ax.set_ylabel("Value")                              # Set title of y axis
+        ax.set_title("Serial Data")                        # Set title of figure
+        ax.set_ylabel("pounds")                              # Set title of y axis
 
 dataList = []                                           # Create empty list variable for later use
                                                         
@@ -40,7 +41,8 @@ ax = fig.add_subplot(111)                               # Add the subplot to mai
 
 realTimePlot = AnimationPlot()
 
-ser = serial.Serial("/dev/tty.usbserial-XXXXXXXX", 9600)                           # Establish Serial object with the serial port and set BAUD rate to match Arduino Port/rate. Use ls /dev/tty.* in the terminal to identify serial device. Put this in the " "
+# Establish Serial object with the serial port and set BAUD rate to match Arduino Port/rate. Use ls /dev/tty.* in the terminal to identify serial device. Put this in the " "
+ser = serial.Serial("/dev/tty.usbserial-XXXXXXXX", 9600)   
 time.sleep(2)                                           # Time delay for Arduino Serial initialization 
 
                                                         # Matplotlib Animation Fuction that takes takes care of real time plot.
