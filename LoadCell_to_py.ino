@@ -3,20 +3,20 @@
 const float CALIBRATION_FACTOR = 219.9;
 
 // Create an instance of the HX711 library
-HX711 loadSensor;
+HX711 scale;
 
 void setup() {
   Serial.begin(9600);
-  loadSensor.begin(2, 3); // Set the data and clock pins for the load sensor
-  loadSensor.set_scale(CALIBRATION_FACTOR);
-  loadSensor.tare();
+  scale.begin(2, 3); // Set the data and clock pins for the load sensor
+  scale.set_scale(CALIBRATION_FACTOR);
+  scale.tare();
 }
 
 void loop() {
   if (Serial.available()) {
     char c = Serial.read();
     if (c == 'x') {
-      float load = loadSensor.get_units();
+      float load = scale.get_units();
       Serial.println(load);
     }
   }
