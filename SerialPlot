@@ -10,7 +10,7 @@ import matplotlib.animation as animation
 class AnimationPlot:
 
     def animate(self, i, dataList, ser):
-        ser.write(b'g')                                     # Transmit the char 'g' to receive the Arduino data point
+        ser.write(b'x')                                     # Transmit the char 'g' to receive the Arduino data point
         arduinoData_string = ser.readline().decode('ascii') # Decode receive Arduino data as a formatted string
         #print(i)                                           # 'i' is a incrementing variable based upon frames = x argument
 
@@ -30,7 +30,7 @@ class AnimationPlot:
         
 
     def getPlotFormat(self):
-        ax.set_ylim([0, 1200])                              # Set Y axis limit of plot
+        ax.set_ylim([0, 50])                              # Set Y axis limit of plot #change t0 MAX(Y)
         ax.set_title("Serial Data")                        # Set title of figure
         ax.set_ylabel("pounds")                              # Set title of y axis
 
