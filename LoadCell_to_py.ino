@@ -1,3 +1,4 @@
+#include "HX711.h" //Original Repository Created by Bodge https://github.com/bogde/HX711
 // Define the calibration factor for your load sensor
 const float CALIBRATION_FACTOR = 219.9;
 
