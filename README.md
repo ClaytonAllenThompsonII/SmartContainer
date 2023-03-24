@@ -1,7 +1,7 @@
 - 👋 Hi, I’m @ClaytonAlanThompsonII
-- 👀 I’m interested in Econometrics, Data Science, Statistics, Finance, & Computer Science!
-- 🌱 I’m currently learning Python, SQL, Git, JSON, APIs, Data Science, Econometrics!
-- 💞️ I’m looking to collaborate on Economic Research and ML projects. 
+- 👀 I’m interested in Econometrics, Data Science, Data Engineering, Statistics, Finance, & Computer Science!
+- 🌱 I’m currently learning Python, SQL ❄️, Git, JSON, APIs, Data Science, Econometrics, data modeling and AWS. 
+- 💞️ I’m looking to collaborate on Economic Research, ML projects, IoT. 
 - 📫 How to reach me --- clay.thompson13@gmail.com
 
 <!---
