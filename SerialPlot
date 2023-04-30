@@ -37,8 +37,8 @@ class AnimationPlot:
         ax.set_ylabel(' Weight (Lbs) ')                         # Set title of y axis - current reading is in grams. 
         ax.set_xlabel(' Real Time ')
         ax.set_autoscaley_on(True)
-        ax.grid(color = 'powderblue')
-        ax.axhline(y = 0.0, color = 'aliceblue', linestyle= '-')
+        ax.grid(color = 'powderblue')                            # add grid with color. 
+        ax.axhline(y = 0.0, color = 'aliceblue', linestyle= '-') # adding horizontal reference line to chart where Y = 0.0. 
 dataList = []                                           # Create empty list variable for later use
                                                         
 fig = plt.figure()                                      # Create a new figure, Matplotlib plots fig is the 'higher level' plot window- think of as a tile object in Tableau. 
