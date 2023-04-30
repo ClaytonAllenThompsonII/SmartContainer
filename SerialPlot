@@ -1,11 +1,12 @@
 #Code foundation as of 03.09.23 is attributed to WaveShapePlay and their Arduino_RealTimePlot public repository. 
 #Real Time plot using a Serial Connection.
-#Serial Connection reads Load Cell Sensors. 
+#Serial Connection reads weight data transmitted from Load Cell Sensors and HX711 library. 
 
 import time
 import serial
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+
 
 class AnimationPlot:
 
@@ -30,17 +31,17 @@ class AnimationPlot:
         
 
     def getPlotFormat(self):
-        ax.set_ylim([0, 100])                              # Set Y axis limit of plot #change t0 MAX(Y)
+        ax.set_ylim([0, 125])                              # Set Y axis limit of plot #change t0 MAX(Y)
         ax.set_title("Load Cell Weight Data ",
-                      loc='center', fontstyle='oblique',fontsize='large')                       # Set title of figure
-        ax.set_ylabel("Weight (Lbs) ")                         # Set title of y axis - current reading is in grams. 
-        ax.set_xlabel('Real Time')
+                      loc='center',fontstyle='oblique',fontsize='large')                       # Set title of figure
+        ax.set_ylabel(' Weight (Lbs) ')                         # Set title of y axis - current reading is in grams. 
+        ax.set_xlabel(' Real Time ')
         ax.set_autoscaley_on(True)
+        ax.grid(color = 'powderblue') 
 dataList = []                                           # Create empty list variable for later use
                                                         
 fig = plt.figure()                                      # Create a new figure, Matplotlib plots fig is the 'higher level' plot window- think of as a tile object in Tableau. 
-ax = fig.add_subplot(111, facecolor='lightskyblue')                               # Add the subplot to main figure window #Three integers (*nrows*, *ncols*, *index*). # Same as addsubplot(1,1,1)
-
+ax = fig.add_subplot(111, facecolor='lightskyblue')                              # Add the subplot to main figure window #Three integers (*nrows*, *ncols*, *index*). # Same as addsubplot(1,1,1)
 realTimePlot = AnimationPlot()
 
 # Establish Serial object with the serial port and set BAUD rate to match Arduino Port/rate. Use ls /dev/tty.* in the terminal to identify serial device. Put this in the " "
