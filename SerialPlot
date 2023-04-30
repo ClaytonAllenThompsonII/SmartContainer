@@ -32,7 +32,7 @@ class AnimationPlot:
     def getPlotFormat(self):
         ax.set_ylim([0, 100])                              # Set Y axis limit of plot #change t0 MAX(Y)
         ax.set_title("Serial Data", loc='center', fontstyle='oblique',fontsize='large')                       # Set title of figure
-        ax.set_ylabel("Mass (g)")                         # Set title of y axis - current reading is in grams. 
+        ax.set_ylabel("Weight(Lbs)")                         # Set title of y axis - current reading is in grams. 
         ax.set_xlabel('Real Time')
         ax.set_autoscaley_on(True)
 dataList = []                                           # Create empty list variable for later use
