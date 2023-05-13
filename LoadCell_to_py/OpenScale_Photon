@@ -1,0 +1,15 @@
+#include <OpenScale.h>
+#include <Wire.h>
+#include <AWSIoTDeviceSDK.h>
+#include <Particle.h>
+#include <TimeLib.h>
+
+OpenScale scale;
+
+//AWS IoT endpoint configuration
+char* awsEndpoint = "your-iot-endpoint.amazonaws.com";
+char* awsRegion = "us-east-1";
+char* awsKey = "your-aws-key";
+char* awsSecret = "your-aws-secret";
+char* awsClientId = "your-aws-client-id";
+char* awsTopic = "load_cell_data";
