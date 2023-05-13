@@ -13,3 +13,30 @@ char* awsKey = "your-aws-key";
 char* awsSecret = "your-aws-secret";
 char* awsClientId = "your-aws-client-id";
 char* awsTopic = "load_cell_data";
+
+AWSIoTClient awsClient(awsEndpoint, awsClientId, awsKey, awsSecret);
+
+void setup() {
+    Serial.begin(9600); // Set Baud Rate to 9600
+    Wire.begin(); // initialize I2C bus
+    scale.begin(); 
+
+    //connect to the guest wifi
+    Wifi.on();
+    WiFi.setCredentials("guest-ssid", "guest-password");
+    Particle.connect();
+    waitFor(WiFi.ready, 60000);
+
+  // Display message when connected to WiFi
+    if (WiFi.ready()) {
+    Particle.publish("device-connected", "Photon has connected to guest WiFi.");
+  }
+
+// Set timezone offset to local timezone (Eastern Time Zone)
+  Time.zone(-5); 
+
+  awsClient.enableMetrics(); // optional, enables metrics collection
+  awsClient.setMetricsInterval(60000); // optional, sets metrics interval to 1 minute
+  awsClient.connect();
+
+}
