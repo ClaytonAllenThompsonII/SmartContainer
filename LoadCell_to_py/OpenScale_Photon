@@ -16,6 +16,8 @@ char* awsTopic = "load_cell_data";
 
 AWSIoTClient awsClient(awsEndpoint, awsClientId, awsKey, awsSecret);
 
+SYSTEM_MODE(MANUAL);
+
 void setup() {
     Serial.begin(9600); // Set Baud Rate to 9600
     Wire.begin(); // initialize I2C bus
@@ -38,5 +40,30 @@ void setup() {
   awsClient.enableMetrics(); // optional, enables metrics collection
   awsClient.setMetricsInterval(60000); // optional, sets metrics interval to 1 minute
   awsClient.connect();
+
+}
+
+
+
+void loop() {
+
+    String input;
+    float weight; 
+    time_t timestamp; 
+
+
+    // run program every 10 minutes during working hours (10am-10pm).
+    //Check if current time is within working hours
+    if (hour) >= 10 && hour() < 22 {
+        //tare the scale
+        scale.tare(); 
+    }
+
+
+
+
+
+
+
 
 }
