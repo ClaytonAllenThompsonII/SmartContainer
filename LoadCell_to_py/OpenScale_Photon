@@ -14,46 +14,29 @@ char* awsSecret = "your-aws-secret";
 char* awsClientId = "your-aws-client-id";
 char* awsTopic = "load_cell_data";
 
-AWSIoTClient awsClient(awsEndpoint, awsClientId, awsKey, awsSecret);
+AWSIoTClient awsClient(awsEndpoint, awsClientId, awsKey, awsSecret); 
 
-# Wifi event handler
-void wifiEventHandler(system_event_t event, int param) {
-  switch(event) {
-    case WiFiEvent::connected:
-      Serial.println("Connected to Wi-Fi!");
-      break;
-    case WiFiEvent::disconnected:
-      Serial.println("Disconnected from Wi-Fi!");
-      break;
-    default:
-      break;
-  }
-}
-
-String capitalizeStartString(String str) {
-  if (str.length() > 0) {
-    str[0] = toupper(str[0]);
-  }
-  return str;
-}
-
-SYSTEM_MODE(MANUAL);
-
+// -------------------------------Setup the Photon --------------------------
 void setup() {
-    Serial.begin(9600); // Set Baud Rate to 9600
+
+    Wire.setSpeed(100000) // Sets the I2C clock speed to 100KHZ. Must be called before begin()
     Wire.begin(); // initialize I2C bus
+      
+      Serial.begin(9600); // Set Baud Rate to 9600 //Debug Terminal
+      Serial1.begin(9600) // TX, RX from OpenScale 
+
     scale.begin(); 
 
     //connect to the guest wifi
     Wifi.on();
-    WiFi.setCredentials("guest-ssid", "guest-password");
-    Particle.connect();
+    WiFi.setCredentials("guest-ssid", "guest-password"); // Similiar to WiFi.Begin(ssid,pass) Allows the application to set credentials for the Wi-Fi network from within the code. These credentials will be added to the device's memory, and the device will automatically attempt to connect to this network in the future.
+    //Particle.connect(); // This connects the device to the Particle cloud (which is only for testing)
     waitFor(WiFi.ready, 60000);
 
-  // Display message when connected to WiFi
-    if (WiFi.ready()) {
+  // Display message when connected to WiFi. This uses Wifi library to publish a message to the Particle cloud. This is for testing. 
+    /*if (WiFi.ready()) {
     Particle.publish("device-connected", "Photon has connected to guest WiFi.");
-  }
+  }*/
 
 // Set timezone offset to local timezone (Eastern Time Zone)
   Time.zone(-5); 
@@ -64,27 +47,34 @@ void setup() {
 
 }
 
-
-
+// -------------------------------Photon Program Loop --------------------------
 void loop() {
 
-    String input;
+    String input; // stores user input as a string
     float weight; 
     time_t timestamp; 
 
 
-    // run program every 10 minutes during working hours (10am-10pm).
-    //Check if current time is within working hours
-    if (hour) >= 10 && hour() < 22 {
-        //tare the scale
-        scale.tare(); 
+//Prompt the user for Input
+Serial.println("What are you weighing?");
+while (!Serial.available()) {
+  delay(100);
+}
+input = Serial.readStringUntil('\n'); //reads characters from the serial buffer/port into a String. The returned string is assigned to the variable 'input' object containing the characters read until the specified delimiter '\n' or newline (enter). 
+
+//Format start string with uppercase letter
+input.replace(0, 1, input.substring(0, 1,).toUpperCase()); 
+
+//Format the start string with uppercase letters. 
+input.replace(0, 1, input.substring(0, 1).toUppercase())
+
+ 
+ scale.tare(); 
+
+ // Read weight from load cells
+ weight = scale.get()
     }
 
 
 
 
-
-
-
-
-}
