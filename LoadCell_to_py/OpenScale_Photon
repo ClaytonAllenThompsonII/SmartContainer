@@ -31,7 +31,14 @@ void setup() {
     Wifi.on();
     WiFi.setCredentials("guest-ssid", "guest-password"); // Similiar to WiFi.Begin(ssid,pass) Allows the application to set credentials for the Wi-Fi network from within the code. These credentials will be added to the device's memory, and the device will automatically attempt to connect to this network in the future.
     //Particle.connect(); // This connects the device to the Particle cloud (which is only for testing)
-    waitFor(WiFi.ready, 60000);
+    WiFi.ready();
+    // Connect to guest Wi-Fi network
+    if (WiFi.ready()) {Serial.println("Connected to Wi-Fi network!");}
+     else {Serial.println("Failed to connect to Wi-Fi network!");}
+
+  delay(1000);
+
+
 
   // Display message when connected to WiFi. This uses Wifi library to publish a message to the Particle cloud. This is for testing. 
     /*if (WiFi.ready()) {
