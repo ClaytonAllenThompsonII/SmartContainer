@@ -3,6 +3,12 @@
 #include <AWSIoTDeviceSDK.h>
 #include <Particle.h>
 #include <TimeLib.h>
+#include "HX711.h" //Original Repository Created by Bodge https://github.com/bogde/HX711
+
+// Define the calibration factor for your load sensor
+const float CALIBRATION_FACTOR = -1760;
+long setting_tare_point; //Zero value that is found when scale is tared
+const byte statusLED = 13;  //Flashes with each reading
 
 OpenScale scale;
 
@@ -25,7 +31,10 @@ void setup() {
       Serial.begin(9600); // Set Baud Rate to 9600 //Debug Terminal
       Serial1.begin(9600) // TX, RX from OpenScale 
 
-    scale.begin(); 
+    scale.begin(2,3); // Set the data and clock pins for the load sensor
+    scale.set_scale(CALIBRATION_FACTOR);
+    scale.set_offset(setting_tare_point);
+    scale.tare(); // need to figure out where to put tare. 
 
     //connect to the guest wifi
     Wifi.on();
@@ -37,7 +46,6 @@ void setup() {
      else {Serial.println("Failed to connect to Wi-Fi network!");}
 
   delay(1000);
-
 
 
   // Display message when connected to WiFi. This uses Wifi library to publish a message to the Particle cloud. This is for testing. 
@@ -72,14 +80,11 @@ input = Serial.readStringUntil('\n'); //reads characters from the serial buffer/
 //Format start string with uppercase letter
 input.replace(0, 1, input.substring(0, 1,).toUpperCase()); 
 
-//Format the start string with uppercase letters. 
-input.replace(0, 1, input.substring(0, 1).toUppercase())
-
  
  scale.tare(); 
 
  // Read weight from load cells
- weight = scale.get()
+ weight = scale.get_units()
     }
 
 
