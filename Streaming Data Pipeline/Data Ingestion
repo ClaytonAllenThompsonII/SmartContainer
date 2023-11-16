@@ -1,0 +1,103 @@
+import boto3
+import time
+import json
+import random
+from datetime import datetime
+
+iot_client = boto3.client('iot-data', region_name='your-region')
+iot_topic = 'your-iot-topic'
+
+kinesis_client = boto3.client('kinesis', region_name='your-region')
+kinesis_stream_name = 'your-kinesis-stream'
+
+s3_client = boto3.client('s3', region_name='your-region')
+s3_bucket = 'your-s3-bucket'
+
+device_id = "device123"
+
+def generate_iot_data(load_value, unit):
+    timestamp = datetime.utcnow().isoformat()
+
+    data = {
+        "timestamp": timestamp,
+        "device_id": device_id,
+        "load_value": load_value,
+        "unit": unit
+    }
+
+    return json.dumps(data)
+
+# Simulate reading from OpenScale load sensor
+def read_from_load_sensor():
+    # Replace 'your-subscription-client-id' with a unique client ID for this script
+    subscription_client_id = 'your-subscription-client-id'
+
+    # Subscribe to the IoT Core topic where OpenScale publishes data
+    response = iot_client.create_topic_rule(
+        ruleName='your-rule-name',
+        topicRulePayload={
+            'sql': f'SELECT * FROM "{iot_topic}"',
+            'actions': [
+                {
+                    'kinesis': {
+                        'roleArn': 'your-kinesis-role-arn',
+                        'streamName': 'your-kinesis-stream',
+                        'partitionKey': 'device123'  # Assuming 'device123' is the device ID
+                    }
+                }
+            ],
+            'awsIotSqlVersion': '2016-03-23',
+            'ruleDisabled': False
+        }
+    )
+
+    # In a real-world scenario, you would handle the subscription response appropriately
+    # This example assumes that the rule is created successfully
+    # Here's a simplified example assuming the OpenScale messages are in JSON format:
+    # Simulate receiving messages from IoT Core
+    open_scale_messages = [
+        '{"load_value": 25.5, "unit": "lbs"}',
+        '{"load_value": 30.2, "unit": "lbs"}',
+        # Add more messages as needed
+    ]
+    
+    # Simulate reading one message at a time
+    message = open_scale_messages.pop(0)
+    message_data = json.loads(message)
+    return message_data['load_value'], message_data['unit']
+
+while True:
+    # Read data from OpenScale load sensor
+    load_value, unit = read_from_load_sensor()
+
+    # Generate IoT data
+    data = generate_iot_data(load_value, unit)
+
+    # Publish data to AWS IoT Core topic
+    iot_client.publish(
+        topic=iot_topic,
+        payload=data
+    )
+
+    print(f"Data published to {iot_topic}")
+
+    # Put data into the Kinesis stream
+    response = kinesis_client.put_record(
+        StreamName=kinesis_stream_name,
+        Data=data,
+        PartitionKey=device_id
+    )
+
+    print(f"Record {response['SequenceNumber']} sent to {kinesis_stream_name}")
+
+    # Store data in S3
+    s3_object_key = f"{device_id}/{timestamp}.json"
+    s3_client.put_object(
+        Bucket=s3_bucket,
+        Key=s3_object_key,
+        Body=data
+    )
+
+    print(f"Data stored in S3: s3://{s3_bucket}/{s3_object_key}")
+
+    time.sleep(1)
