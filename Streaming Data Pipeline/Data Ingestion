@@ -16,6 +16,7 @@ s3_bucket = 'your-s3-bucket'
 device_id = "device123"
 
 def generate_iot_data(load_value, unit):
+    """Function to generate IoT payload """
     timestamp = datetime.utcnow().isoformat()
 
     data = {
@@ -29,6 +30,7 @@ def generate_iot_data(load_value, unit):
 
 # Simulate reading from OpenScale load sensor
 def read_from_load_sensor():
+    """ Function to read load sensors"""
     # Replace 'your-subscription-client-id' with a unique client ID for this script
     subscription_client_id = 'your-subscription-client-id'
 
