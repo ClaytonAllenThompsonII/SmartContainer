@@ -1,0 +1,33 @@
+import boto3
+import time
+import random
+import json
+from datetime import datetime
+
+iot_client = boto3.client('iot-data', region_name='your-region')
+iot_topic = 'your-iot-topic'
+
+def generate_iot_data(device_id):
+    timestamp = datetime.utcnow().isoformat()
+    load_value = round(random.uniform(20, 30), 2)
+
+    data = {
+        "timestamp": timestamp,
+        "device_id": device_id,
+        "load_value": load_value
+    }
+
+    return json.dumps(data)
+
+device_id = "device123"
+while True:
+    data = generate_iot_data(device_id)
+
+    # Publish data to AWS IoT Core topic
+    iot_client.publish(
+        topic=iot_topic,
+        payload=data
+    )
+
+    print(f"Data published to {iot_topic}")
+    time.sleep(1)

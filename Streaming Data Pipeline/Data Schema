@@ -1,0 +1,6 @@
+{
+    "timestamp": "2023-01-01T12:00:00.000Z",
+    "device_id": "device123",
+    "load_value": 25.5,
+    "unit": "lbs"
+  }
